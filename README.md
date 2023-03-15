@@ -4,6 +4,7 @@ This is a Julia numerical package for calculating the spectrum and wavefunction 
 "trion.jl" is the main program with detailed descriptions.
 
 references:
+
 [1] KW Song, S. Chiavazzo, I. A. Shelykh, O. Kyriienko, Attractive trion-polariton nonlinearity due to Coulomb scattering
     https://arxiv.org/abs/2204.00594
     
