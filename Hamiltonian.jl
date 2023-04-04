@@ -41,26 +41,24 @@ end
 
 # Keldysh potential matrix elements (Hermite basis)
 function W(V, a, lambda, Nmax)
-    return [[ (bx%2==0 && by%2==0) ? 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> V(q/lambda)*q^(bx+by)*exp(-a*q^2), 0, Inf )[1] : 0 for bx in 0:(4*Nmax)] for by in 0:(4*Nmax)]    
+   Hv=zeros(3*Nmax+1,3*Nmax+1)
+   for bx in 0:(3*Nmax)
+      for by in bx:(3*Nmax)
+         #Hv[bx+1,by+1]=((bx%2==0 && by%2==0) ? 2*pi*2*beta((1+bx)/2,(1+by)/2)*1/lambda*quadgk(q -> V(q/lambda)*q^(bx+by)*exp(-a*q^2), 0, Inf )[1] : 0)
+         Hv[bx+1,by+1]=((bx%2==0 && by%2==0) ? 2*pi*2*quadgk(q -> V(q/lambda)*exp(-a*q^2+(bx+by)*log(q)+log(beta((1+bx)/2,(1+by)/2))), 0, Inf )[1] : 0)
+         Hv[by+1,bx+1]=Hv[bx+1,by+1]
+      end
+   end
+   return Hv    
 end
+
 function VK(bx,by,lambda) 
    global r0
    lambdar0=lambda/r0
    return 2*pi*2*beta((1+bx)/2,(1+by)/2)*(-lambdar0)^(bx+by)*(lambdar0/2*exp(-(lambdar0/2)^2)* (pi*erfi(lambdar0/2)-expinti(( lambdar0/2)^2))-sum([(-lambdar0/2)^(-j)*gamma((1+j)/2) for j in 0:(bx+by-1)]))
 end
-function Vintra1(bx,by,lambda)
-   global r1, r2 
-   return 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> (1+r2/lambda*q*(1-exp(-2*L/lambda*q)))/((1+r1/lambda*q)*(1+r2/lambda*q)-r1*r2/lambda^2*q^2*exp(-2*L/lambda*q))*q^(bx+by)*exp(-q^2/4), 0, Inf )[1]
-end
-function Vintra2(bx,by,lambda)
-   global r1, r2    
-   return 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> (1+r1/lambda*q*(1-exp(-2*L/lambda*q)))/((1+r1/lambda*q)*(1+r2/lambda*q)-r1*r2/lambda^2*q^2*exp(-2*L/lambda*q))*q^(bx+by)*exp(-q^2/4), 0, Inf )[1]
-end
-function Vinter(bx,by,lambda)
-   global r1, r2 
-   return 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> (exp(-q*L/lambda))/((1+r1/lambda*q)*(1+r2/lambda*q)-r1*r2/lambda^2*q^2*exp(-2*L/lambda*q))*q^(bx+by)*exp(-q^2/4), 0, Inf )[1]
-end
-function HT(Ind, V12, V13, V23, Qx, Qy, lambda1, lambda2)
+
+function HT(Ind, Nmax, V12, V13, V23, Qx, Qy, lambda1, lambda2)
    global epsilon
    global m1, m2, mh
    Nind=length(Ind)
@@ -73,6 +71,9 @@ function HT(Ind, V12, V13, V23, Qx, Qy, lambda1, lambda2)
    l2=lambda2/lbar
    KE(t,mc,Q,m,n)=t*(t*(1/mc+1/mh)/2*F(2,m,n)-(Q/mh)*F(1,m,n))
    g(m,n,s,lambda)=(lambda)^(n-s)*(-lambda)^(m-s)*binomial(n,s)*binomial(m,s)*(2^(s-(n+m)/2)*factorial(s)/(sqrt(factorial(m))*sqrt(factorial(n))))#*exp(s*log(2)+log(factorial(s))-1/2*((n+m)*log(2)+log(factorial(m)+log(factorial(n)))))
+   W12=W(V12,0.25,lbar,Nmax)
+   W13=W(V13,0.25,lambda1,Nmax)
+   W23=W(V23,0.25,lambda2,Nmax)
    for i in 1:Nind
       for j in i:Nind
          n=Ind[i]
@@ -92,14 +93,14 @@ function HT(Ind, V12, V13, V23, Qx, Qy, lambda1, lambda2)
             sum([
                sum([
                   sum([
-                     ((b[1]+b[3])%2==0 && (b[2]+b[4])%2==0 ? 1/lbar*V12(b[1]+b[3]-2*(s1+s3),b[2]+b[4]-2*(s2+s4),lbar)*g(m[1],n[1],s1,l1)*g(m[2],n[2],s2,l1)*g(n[3],m[3],s3,l2)*g(n[4],m[4],s4,l2) : 0) 
+                     ((b[1]+b[3])%2==0 && (b[2]+b[4])%2==0 ? 1/lbar*W12[b[1]+b[3]-2*(s1+s3)+1,b[2]+b[4]-2*(s2+s4)+1]*g(m[1],n[1],s1,l1)*g(m[2],n[2],s2,l1)*g(n[3],m[3],s3,l2)*g(n[4],m[4],s4,l2) : 0) 
                   for s1 in 0:sm[1]]) 
                for s2 in 0:sm[2]])
             for s3 in 0:sm[3]])
          for s4 in 0:sm[4]])
 
-         hint += sum([sum([-(n[1]==m[1] && n[2]==m[2] && b[3]%2==0 && b[4]%2==0 ? t2*V23(b[3]-2*s3,b[4]-2*s4,lambda2)*g(m[3],n[3],s3,1)*g(m[4],n[4],s4,1) : 0) for s3 in 0:sm[3]]) for s4 in 0:sm[4]])
-         hint += sum([sum([-(n[3]==m[3] && n[4]==m[4] && b[1]%2==0 && b[2]%2==0 ? t1*V13(b[1]-2*s1,b[2]-2*s2,lambda1)*g(m[1],n[1],s1,1)*g(m[2],n[2],s2,1) : 0) for s1 in 0:sm[1]]) for s2 in 0:sm[2]])
+         hint += sum([sum([-(n[1]==m[1] && n[2]==m[2] && b[3]%2==0 && b[4]%2==0 ? 1/lambda2*W23[b[3]-2*s3+1,b[4]-2*s4+1]*g(m[3],n[3],s3,1)*g(m[4],n[4],s4,1) : 0) for s3 in 0:sm[3]]) for s4 in 0:sm[4]])
+         hint += sum([sum([-(n[3]==m[3] && n[4]==m[4] && b[1]%2==0 && b[2]%2==0 ? 1/lambda1*W13[b[1]-2*s1+1,b[2]-2*s2+1]*g(m[1],n[1],s1,1)*g(m[2],n[2],s2,1) : 0) for s1 in 0:sm[1]]) for s2 in 0:sm[2]])
          
       H[i,j]=h0+k0*hint
       H[j,i]=h0+k0*hint
@@ -108,7 +109,7 @@ function HT(Ind, V12, V13, V23, Qx, Qy, lambda1, lambda2)
    return H
 end
 
-function HX(Ind, V, Qx, Qy, lambda)
+function HX(Ind, Namx, V, Qx, Qy, lambda)
    global epsilon
    global m1, mh
    Nind=length(Ind)
@@ -117,6 +118,7 @@ function HX(Ind, V, Qx, Qy, lambda)
    t=(1/lambda)
    KE(t,mc,Q,m,n)=t*(t*(1/mc+1/mh)/2*F(2,m,n)-(Q/mh)*F(1,m,n))
    g(m,n,s,l)=(l)^(n-s)*(-l)^(m-s)*binomial(n,s)*binomial(m,s)*(2^(s-(n+m)/2)*factorial(s)/(sqrt(factorial(m))*sqrt(factorial(n))))
+   V1=W(V,0.25,lambda,Namx)
    for i in 1:Nind
       for j in i:Nind
          n=Ind[i]
@@ -127,8 +129,7 @@ function HX(Ind, V, Qx, Qy, lambda)
 
          sm=map(minimum, [vcat(n,m)[:,k] for k in 1:length(n)])
          b=m+n
-         #hint=-1/lambda*g(m[1],n[1],0,1)*g(m[2],n[2],0,1)
-         hint=sum([sum([-(b[1]%2==0 && b[2]%2==0 ? 1/lambda*V(b[1]-2*s1,b[2]-2*s2,lambda)*g(m[1],n[1],s1,1)*g(m[2],n[2],s2,1) : 0) for s1 in 0:sm[1]]) for s2 in 0:sm[2]])
+         hint=sum([sum([-(b[1]%2==0 && b[2]%2==0 ? 1/lambda*V1[b[1]-2*s1+1,b[2]-2*s2+1]*g(m[1],n[1],s1,1)*g(m[2],n[2],s2,1) : 0) for s1 in 0:sm[1]]) for s2 in 0:sm[2]])
    
       H[i,j]=h0+k0*hint
       H[j,i]=h0+k0*hint
@@ -139,7 +140,7 @@ end
 
 function spectrum(V,n,Q,N,N0,l0)
    if length(V)==3
-      ET(ind0,l1,l2)=eigvals(HT(ind0,V[1],V[2],V[3],Q[1],Q[2],l1,l2))[n]
+      ET(ind0,l1,l2)=eigvals(HT(ind0,N0,V[1],V[2],V[3],Q[1],Q[2],l1,l2))[n]
       if length(l0)==2
          ET2(l)=ET(fTind(N0),l[1],l[2])
          spec=optimize(ET2,l0,BFGS())
@@ -150,14 +151,14 @@ function spectrum(V,n,Q,N,N0,l0)
          lambda=[spec.minimizer spec.minimizer]
       end
       ind=fTind(N)
-      result=eigen(HT(ind,V[1],V[2],V[3],Q[1],Q[2],lambda[1],lambda[2]))
+      result=eigen(HT(ind,N,V[1],V[2],V[3],Q[1],Q[2],lambda[1],lambda[2]))
    else
-      EX(ind0,l)=eigvals(HX(ind0,V[1],Q[1],Q[2],l))[n]
+      EX(ind0,l)=eigvals(HX(ind0,N0,V[1],Q[1],Q[2],l))[n]
       EX0(l1)=EX(fXind(N0),l1)
       spec=optimize(EX0,l0[1],10*l0[1]) 
       lambda=[spec.minimizer]
       ind=fXind(N)
-      result=eigen(HX(ind,V[1],Q[1],Q[2],spec.minimizer))
+      result=eigen(HX(ind,N,V[1],Q[1],Q[2],spec.minimizer))
    end
    A=hcat(ind,result.vectors[:,1])
    wavefunc=[A[i,:] for i in 1:length(ind)]

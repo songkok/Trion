@@ -12,29 +12,6 @@ function Theta1(a,bx,by,lambda)
         sum([(-sqrt(a)*lambdar0)^(-j)*gamma((1+j)/2) for j in 0:(bx+by-1)]))
 end
 
-function Thetaintra1(a,bx,by,lambda)
-    global r1, r2 
-    return 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> (1+r2/lambda*q*(1-exp(-2*L/lambda*q)))/
-    ((1+r1/lambda*q)*(1+r2/lambda*q)-r1*r2/lambda^2*q^2*exp(-2*L/lambda*q))*q^(bx+by)*exp(-a*q^2), 0, Inf )[1]
-end
-
-function Thetaintra2(a,bx,by,lambda)
-    global r1, r2 
-    return 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> (1+r1/lambda*q*(1-exp(-2*L/lambda*q)))/
-    ((1+r1/lambda*q)*(1+r2/lambda*q)-r1*r2/lambda^2*q^2*exp(-2*L/lambda*q))*q^(bx+by)*exp(-q^2/4), 0, Inf )[1]
-end
-
-function Thetainter(a,bx,by,lambda)
-    global r1, r2 
-    return 2*pi*2*beta((1+bx)/2,(1+by)/2)*quadgk(q -> (exp(-q*L/lambda))/
-    ((1+r1/lambda*q)*(1+r2/lambda*q)-r1*r2/lambda^2*q^2*exp(-2*L/lambda*q))*q^(bx+by)*exp(-q^2/4), 0, Inf )[1]
-end
-
-function TH(Theta, a, lambda, Nmax)
-    return [[ (bx%2==0 && by%2==0) ? Theta(a, bx, by, lambda) : 0 for bx in 0:(4*Nmax)] for by in 0:(4*Nmax)]    
-end
-
-
 function H4(h, s1, s2, t, c)
   m1, m2, n1, n2 = h
   g = sum(h)
@@ -67,7 +44,7 @@ function J(m1x, m2x, n1px, n2px, m1px, m2px, n1x, n2x, m1y, m2y, n1py, n2py, m1p
             sum([sum([(-1)^(Int( tx + ty))*exp((logfactorial(Sx - 2*(s1x + s2x + s1px + s2px))+logfactorial(Sy - 2*(s1y + s2y + s1py + s2py)))-
                     (logfactorial(tx)+logfactorial(ty)+logfactorial(Sx - 2*(s1x + s2x + s1px + s2px + tx))+logfactorial(Sy - 2*(s1y + s2y + s1py + s2py + ty)))
                     )*c^(Sx + Sy - 2*(s1x + s2x + s1px + s2px - tx + s1y + s2y + s1py + s2py - ty))*
-                    Tab[ gx + Sx - 2*(s1x + s2x + s1px + s2px + tx) + 1][ gy + Sy -  2*(s1y + s2y + s1py + s2py + ty) + 1]
+                    Tab[ gx + Sx - 2*(s1x + s2x + s1px + s2px + tx) + 1, gy + Sy -  2*(s1y + s2y + s1py + s2py + ty) + 1]
             for tx in 0:Int(floor(Sx/2 - (s1x + s2x + s1px + s2px))) ]) for ty in 0:Int(floor(Sy/2 - (s1y + s2y + s1py + s2py))) ])
         for s1x in 0:minimum([m1x, n1px])]) for s2x in 0:minimum([m2x, n2px])]) for s1px in 0:minimum([m1px, n1x])]) for s2px in 0:minimum([m2px, n2x])])
         for s1y in 0:minimum([m1y, n1py])]) for s2y in 0:minimum([m2y, n2py])]) for s1py in 0:minimum([m1py, n1y])]) for s2py in 0:minimum([m2py, n2y])]) : 0)
@@ -87,9 +64,9 @@ function ExI(m, n, mp, np, T12, T38)
     if (gx%2 == 0 && gy%2 == 0)
         for spx in 0:minimum([mx, mpx])
             for spy in 0:minimum([my, mpy])                    
-                Imn +=[sum([sum([ sum([sum([H4(hx, sx, spx, tx, 1/2)*H4(hy, sy, spy, ty, 1/2)*T12[gx-2*(sx+spx+tx)+1][gy-2*(sy+spy+ty)+1] 
+                Imn +=[sum([sum([ sum([sum([H4(hx, sx, spx, tx, 1/2)*H4(hy, sy, spy, ty, 1/2)*T12[gx-2*(sx+spx+tx)+1, gy-2*(sy+spy+ty)+1] 
                     for tx in 0:Int(floor(gx/2 -(sx+spx))) ]) for ty in 0:Int(floor(gy/2-(sy+spy))) ]) for sx in 0:minimum([nx, npx]) ]) for sy in 0:minimum([ny, npy]) ]),
-                    -sum([sum([sum([sum([(-1)^(nx+ny-rx-ry)*binomial(nx,rx)*binomial(ny,ry)*binomial(npx,rpx)*binomial(npy,rpy)*sum([sum([ sum([sum([ H4([rx, mx, rpx, mpx], sx, spx, tx, 1/4)*H4([ry, my, rpy, mpy], sy, spy, ty, 1/4)*T38[gx-2*(sx+spx+tx)+1][gy-2*(sy+spy+ty)+1] 
+                    -sum([sum([sum([sum([(-1)^(nx+ny-rx-ry)*binomial(nx,rx)*binomial(ny,ry)*binomial(npx,rpx)*binomial(npy,rpy)*sum([sum([ sum([sum([ H4([rx, mx, rpx, mpx], sx, spx, tx, 1/4)*H4([ry, my, rpy, mpy], sy, spy, ty, 1/4)*T38[gx-2*(sx+spx+tx)+1, gy-2*(sy+spy+ty)+1] 
                     for tx in 0:Int(floor((mx+rx+mpx+rpx)/2 - (sx+spx))) ]) for ty in 0:Int(floor((my+ry+mpy+rpy)/2 - (sy+spy))) ]) for sx in 0:minimum([rx,rpx]) ]) for sy in 0:minimum([ry,rpy]) ]) for rx in 0:nx ])  for ry in 0:ny]) for rpx in 0:npx]) for rpy in 0:npy]) ]
             end
         end
@@ -120,7 +97,7 @@ JRmn=4*sum([sum([sum([sum([sum([sum([sum([sum([
             (-1)^(Int(n1x + m1px + n1y + m1py - r1x - s1px - r1y - s1py))*
             G0(m1x, n1px, s1x, r1px)*G0(m1y, n1py, s1y, r1py)*G0(m1px, n1x, s1px, r1x)*G0(m1py, n1y, s1py, r1y)*
             J0(s1x, m2x, r1px, n2px, s1px, m2px, r1x, n2x)*J0(s1y, m2y, r1py, n2py, s1py, m2py, r1y, n2y)*
-            T12[g1x - s1x - r1px - r1x - s1px + 1][g1y - s1y - r1py  - r1y - s1py + 1] : 0)
+            T12[g1x - s1x - r1px - r1x - s1px + 1, g1y - s1y - r1py  - r1y - s1py + 1] : 0)
         for s1x in 0:m1x]) for r1px in 0:n1px]) for s1y in 0:m1y]) for r1py in 0:n1py]) for r1x in 0:n1x]) for s1px in 0:m1px]) for r1y in 0:n1y]) for s1py in 0:m1py])+
         J(m1x, m2x, n1px, n2px, m1px, m2px, n1x, n2x, m1y, m2y, n1py, n2py, m1py, m2py, n1y, n2y, 0, 0, T14, 1)       
         
@@ -129,13 +106,13 @@ IRmn = ((m1x + n1x + m2px + n2px + gx)%2 == 0 && (m1y + n1y + m2py + n2py + gy)%
     sum([sum([
         sum([sum([sum([sum([
             4*f0(m1x, n1x, s1x)*f0(m1y, n1y, s1y)*f0(m2px, n2px, s2px)*f0(m2py, n2py, s2py)*H4(hx, s2x, s1px, tx, 1/2)*H4(hy, s2y, s1py, ty, 1/2)*
-            T1[ m1x + n1x + m2px + n2px + gx - 2*(s1x + s2px + s2x + s1px + tx)+1][m1y + n1y + m2py + n2py  + gy - 2*(s1y + s2py + s2y + s1py + ty)+1]
+            T1[ m1x + n1x + m2px + n2px + gx - 2*(s1x + s2px + s2x + s1px + tx)+1, m1y + n1y + m2py + n2py  + gy - 2*(s1y + s2py + s2y + s1py + ty)+1]
         for s2px in 0:minimum([m2px, n2px]) ]) for s2py in 0:minimum([m2py, n2py]) ]) for s1x in 0:minimum([m1x, n1x]) ]) for s1y in 0:minimum([m1y, n1y]) ])   
     for tx in 0:Int(floor(gx/2 - s2x - s1px)) ]) for ty in 0:Int(floor(gy/2 - s2y - s1py)) ]) 
     for s2x in 0:minimum([m2x, n1px]) ]) for s2y in 0:minimum([m2y, n1py]) ]) for s1px in 0:minimum([m1px, n2x]) ]) for s1py in 0:minimum([m1py, n2y]) ]) : 0) + 
      (m2px == n2px && m2py == n2py && m1x == n1x && m1y == n1y && (m2x + m1px + n2x + n1px)%2== 0 && (m2y + m1py + n2y + n1py%2) == 0 ?
      sum([sum([sum([sum([
-        sum([sum([ H4(hx, s2x, s1px, tx, 1/2)*H4(hy, s2y, s1py, ty, 1/2)*T12[ gx - 2*(s1px + s2x + tx)+1][ gy - 2*(s2y + s1py + ty)+1]
+        sum([sum([ H4(hx, s2x, s1px, tx, 1/2)*H4(hy, s2y, s1py, ty, 1/2)*T12[ gx - 2*(s1px + s2x + tx)+1, gy - 2*(s2y + s1py + ty)+1]
         for tx in 0:Int(floor(gx/2 - s2x - s1px)) ]) for ty in 0:Int(floor(gy/2 - s2y - s1py)) ])
     for s2x in 0:minimum([m2x, n1px]) ]) for s2y in 0:minimum([m2y, n1py]) ]) for s1px in 0:minimum([m1px, n2x]) ]) for s1py in 0:minimum([m1py, n2y]) ]) : 0)
 
@@ -152,7 +129,7 @@ IAmn = (-2*(m2px == n2px && m2py == n2py && (m1x + n1x + gx)%2 == 0 && (m1y + n1
     sum([sum([
         sum([sum([sum([sum([
             sum([sum([f0(m1x, n1x, s1x)*f0(m1y, n1y, s1y)*H4(hx, s2x, s1px, tx, 1/2)*H4(hy, s2y, s1py, ty, 1/2)* 
-                T34[ m1x + n1x  + gx - 2*( s1x + s2x + s1px + tx) + 1][m1y + n1y + gy - 2*(s1y + s2y + s1py + ty) + 1]
+                T34[ m1x + n1x  + gx - 2*( s1x + s2x + s1px + tx) + 1, m1y + n1y + gy - 2*(s1y + s2y + s1py + ty) + 1]
             for tx in 0:Int(floor(gx/2 - s2x - s1px)) ]) for ty in 0:Int(floor(gy/2 -  s2y -  s1py)) ])
         for s2x in 0:minimum([m2x, n1px]) ]) for s2y in 0:minimum([m2y, n1py]) ]) for s1px in 0:minimum([m1px, n2x]) ]) for s1py in 0:minimum([m1py, n2y]) ])
     for s1x in 0:minimum([m1x, n1x]) ]) for s1y in 0:minimum([m1y, n1y]) ]) : 0) - 
@@ -160,7 +137,7 @@ IAmn = (-2*(m2px == n2px && m2py == n2py && (m1x + n1x + gx)%2 == 0 && (m1y + n1
     sum([sum([
         sum([sum([sum([sum([
             sum([sum([f0(m2px, n2px, s2px)*f0(m2py, n2py, s2py)*H4(hx, s2x, s1px, tx, 1/2)*H4(hy, s2y, s1py, ty, 1/2)*
-                T34[ m2px + n2px + gx - 2*(s2px + s2x + s1px + tx) + 1][m2py + n2py + gy - 2*(s2py + s2y + s1py + ty) + 1]
+                T34[ m2px + n2px + gx - 2*(s2px + s2x + s1px + tx) + 1, m2py + n2py + gy - 2*(s2py + s2y + s1py + ty) + 1]
             for tx in 0:Int(floor(gx/2 - s2x - s1px)) ]) for ty in 0:Int(floor(gy/2 -  s2y -  s1py)) ])
         for s2x in 0:minimum([m2x, n1px]) ]) for s2y in 0:minimum([m2y, n1py]) ]) for s1px in 0:minimum([m1px, n2x]) ]) for s1py in 0:minimum([m1py, n2y]) ])
     for s2px in 0:minimum([m2px, n2px]) ]) for s2py in 0:minimum([m2py, n2py]) ]) : 0)
@@ -169,7 +146,7 @@ IAmn = (-2*(m2px == n2px && m2py == n2py && (m1x + n1x + gx)%2 == 0 && (m1y + n1
     return (-1)^(Int(g2x+g2y))*prod(map(Nc, vcat(vcat(h1x,h2x), vcat(h1y,h2y))))*([JRmn,JAmn])-prod(map(Nc, vcat(hx, hy)))*[IRmn,IAmn]
 end
 
-function gX(Theta,exciton,N,Ncut)
+function gX(V,exciton,N,Ncut)
     global epsilon
     k0=13.605692*2*0.529177/(2*pi)^2/epsilon
     Amn=[exciton.A[i][2] for i in 1:Ncut]
@@ -186,13 +163,13 @@ function gX(Theta,exciton,N,Ncut)
         end
     end
     sort!(SumI,by=sum)
-    T12= TH(Theta, 0.5, lambda, N)
-    T38= TH(Theta, 3.0/8.0, lambda, N)
+    T12= lambda/2*W(V, 0.5, lambda, N)
+    T38= lambda/2*W(V, 3.0/8.0, lambda, N)
     #[repulsive,attractive]
     return  (2*pi)^2*k0/100*sum([Amn[i[3]]*Amn[i[2]]*Amn[i[1]]*Amn[i[4]]*ExI(m[i[3]],m[i[1]],m[i[4]],m[i[2]],T12,T38) for i in SumI]) 
 end
 
-function gT(Theta,trion,N,Ncut)
+function gT(V,trion,N,Ncut)
     global epsilon
     k0=13.605692*2*0.529177/(2*pi)^2/epsilon
     Amn=[trion.A[i][2] for i in 1:Ncut]
@@ -209,13 +186,15 @@ function gT(Theta,trion,N,Ncut)
         end
     end
     sort!(SumI,by=sum)
-    T1= TH(Theta, 1.0, lambda, N)
-    T12= TH(Theta, 0.5, lambda, N)
-    T14= TH(Theta, 0.25, lambda, N)
-    T34= TH(Theta, 3.0/4.0, lambda, N)
-    T38= TH(Theta, 3.0/8.0, lambda, N)
-    T516= TH(Theta, 5.0/16.0, lambda, N)
+    T1= lambda/2*W(V, 1.0, lambda, N)
+    T12= lambda/2*W(V, 0.5, lambda, N)
+    T14= lambda/2*W(V, 0.25, lambda, N)
+    T34= lambda/2*W(V, 3.0/4.0, lambda, N)
+    T38= lambda/2*W(V, 3.0/8.0, lambda, N)
+    T516= lambda/2*W(V, 5.0/16.0, lambda, N)
     #[repulsive,attractive]
     return  (2*pi)^2*k0/100*sum([Amn[i[3]]*Amn[i[4]]*Amn[i[1]]*Amn[i[2]]*TrI(m[i[1]],m[i[2]],m[i[3]],m[i[4]], T1, T12, T14, T34, T38, T516) for i in SumI]) 
 end
+
+
 #
