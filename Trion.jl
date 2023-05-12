@@ -20,8 +20,11 @@ alpha=1 # 1 = ground state, 2,3,4,... = excited states
 
 #V=[W(e1<->e2), W(e1<->h), W(e2<->h)] (trion)
 #V=[W(e<->h)] (exciton)
-#where The default potential are:
-# W=VKel (monolayer Keldysh interaction)
+#The 2D potentail is difined as:
+#V(q)=2*pi/q*1/epsilon_2D(q), we epsilon_2D(q) is the q-dependent screening dieletric constant in 2D
+#Here W = 1/epsilon_2D(q)
+#For Keldysh
+#epsilon_2D(q)=epsilon*(1+r0*q) and W=1/epsilon*1/(1+r0*q) (monolayer Keldysh interaction)
 VKel(q)=1/epsilon*1/(1+r0*q)
 # W=Vintra1, Vintra2 (intralayer interactions in layer 1,2) 
 Vintra1(q)=(1+r2*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
