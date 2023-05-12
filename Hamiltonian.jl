@@ -5,8 +5,10 @@ using Optim
 
 struct boundstate
    energy
+   r
    lambda
    A
+   order
 end
 
 F( l, m, n)=sum([ sum([ (l+m-2*(r+s))==n ? sqrt(factorial(n)/(2^(2*r+l)*factorial(m)))*binomial(m,Int((l+m-n)/2)-r)*factorial(l)/(factorial(r)*factorial((Int((l-m+n)/2)-r))) : 0 for s in 0:minimum([m,l-2r])]) for r in 0:Int(floor(l/2))])
@@ -163,6 +165,20 @@ function spectrum(V,n,Q,N,N0,l0)
    A=hcat(ind,result.vectors[:,1])
    wavefunc=[A[i,:] for i in 1:length(ind)]
    sort!(wavefunc, by = x -> -abs(x[2]))
-   return boundstate(result.values[1],lambda,wavefunc)
+   A=Dict(wavefunc)
+   function r2f(A, ind, i, di)
+      return sum([ A[n]*((n[i] >= 2 ? -sqrt(n[i]*(n[i]-1)/4)*A[n-di] : 0)+(2*n[i]+1)/2*A[n]-(n[i]+2<=N && sum(n)+2<=N ? sqrt((n[i]+1)*(n[i]+2)/4)*A[n+di] : 0)) for n in ind]) 
+   end
+   if length(V)==3
+      r13=lambda[1]*sqrt(r2f(A,ind,1,[2 0 0 0])+r2f(A,ind,2,[0 2 0 0]))
+      r23=lambda[2]*sqrt(r2f(A,ind,3,[0 0 2 0])+r2f(A,ind,4,[0 0 0 2]))
+      r=[sqrt(r13^2+r23^2-2*lambda[1]*lambda[2]*sum([A[n]*(-(n[1]>=1 && n[3]>=1 ? sqrt(n[1]*n[3]/2^2)*A[n-[1 0 1 0]] : 0) - (sum(n)+2<=N ? sqrt((n[1]+1)*(n[3]+1)/4)*A[n+[1 0 1 0]] : 0)+
+      (n[3]>=1 ? sqrt((n[1]+1)*n[3]/2^2)*A[n+[1 0 -1 0]] : 0)+(n[1]>=1 ? sqrt(n[1]*(n[3]+1)/4)*A[n+[-1 0 1 0]] : 0)+
+      -(n[2]>=1 && n[4]>=1 ? sqrt(n[2]*n[4]/2^2)*A[n-[0 1 0 1]] : 0)-( sum(n)+2<=N ? sqrt((n[2]+1)*(n[4]+1)/4)*A[n+[0 1 0 1]] : 0)+
+      ( n[4]>=1 ? sqrt((n[2]+1)*n[4]/2^2)*A[n+[0 1 0 -1]] : 0)+( n[2]>=1 ? sqrt(n[2]*(n[4]+1)/4)*A[n+[0 -1 0 1 ]] : 0)) for n in ind])),r13,r23 ]
+   else
+      r=lambda[1]sqrt(r2f(A,ind,1,[2 0])+r2f(A,ind,2,[0 2]))
+   end
+   return boundstate(result.values[1],r,lambda,A,[ O[1] for O in wavefunc])
 end
 
