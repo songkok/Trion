@@ -54,14 +54,25 @@ function W(V, a, lambda, Nmax)
    return Hv    
 end
 
+function Wp(V, a, Nmax)
+   Hv=zeros(3*Nmax+1,3*Nmax+1)
+   for bx in 0:(3*Nmax)
+      for by in bx:(3*Nmax)
+         #Hv[bx+1,by+1]=((bx%2==0 && by%2==0) ? 2*pi*2*beta((1+bx)/2,(1+by)/2)*1/lambda*quadgk(q -> V(q/lambda)*q^(bx+by)*exp(-a*q^2), 0, Inf )[1] : 0)
+         Hv[bx+1,by+1]=((bx%2==0 && by%2==0) ? 2*pi*2*quadgk(q -> V(q)*exp(-a*q^2+(bx+by)*log(q)+log(beta((1+bx)/2,(1+by)/2))), 0, Inf )[1] : 0)
+         Hv[by+1,bx+1]=Hv[bx+1,by+1]
+      end
+   end
+   return Hv    
+end
+
 function VK(bx,by,lambda) 
    global r0
    lambdar0=lambda/r0
    return 2*pi*2*beta((1+bx)/2,(1+by)/2)*(-lambdar0)^(bx+by)*(lambdar0/2*exp(-(lambdar0/2)^2)* (pi*erfi(lambdar0/2)-expinti(( lambdar0/2)^2))-sum([(-lambdar0/2)^(-j)*gamma((1+j)/2) for j in 0:(bx+by-1)]))
 end
 
-function HT(Ind, Nmax, V12, V13, V23, Qx, Qy, lambda1, lambda2)
-   global m1, m2, mh
+function HT(Ind, Nmax, V12, V13, V23, m1, m2, mh, Qx, Qy, lambda1, lambda2)
    Nind=length(Ind)
    H=zeros(Nind,Nind)
    k0=13.605692*2*0.529177/(2*pi)^2
@@ -110,8 +121,7 @@ function HT(Ind, Nmax, V12, V13, V23, Qx, Qy, lambda1, lambda2)
    return H
 end
 
-function HX(Ind, Namx, V, Qx, Qy, lambda)
-   global m1, mh
+function HX(Ind, Namx, V, m1, mh, Qx, Qy, lambda)
    Nind=length(Ind)
    H=zeros(Nind,Nind)
    k0=13.605692*2*0.529177/(2*pi)^2
@@ -138,9 +148,10 @@ function HX(Ind, Namx, V, Qx, Qy, lambda)
    return H
 end
 
-function spectrum(V,n,Q,N,N0,l0)
+function spectrum(V, mass, n,Q,N,N0,l0)
    if length(V)==3
-      ET(ind0,l1,l2)=eigvals(HT(ind0,N0,V[1],V[2],V[3],Q[1],Q[2],l1,l2))[n]
+      m1, m2, mh = mass/7.61994776
+      ET(ind0,l1,l2)=eigvals(HT(ind0,N0,V[1],V[2],V[3],m1, m2, mh,Q[1],Q[2],l1,l2))[n]
       if length(l0)==2
          ET2(l)=ET(fTind(N0),l[1],l[2])
          spec=optimize(ET2,l0,BFGS())
@@ -151,14 +162,15 @@ function spectrum(V,n,Q,N,N0,l0)
          lambda=[spec.minimizer spec.minimizer]
       end
       ind=fTind(N)
-      result=eigen(HT(ind,N,V[1],V[2],V[3],Q[1],Q[2],lambda[1],lambda[2]))
+      result=eigen(HT(ind,N,V[1],V[2],V[3], m1, m2, mh, Q[1],Q[2],lambda[1],lambda[2]))
    else
-      EX(ind0,l)=eigvals(HX(ind0,N0,V[1],Q[1],Q[2],l))[n]
+      me, mh = mass/7.61994776
+      EX(ind0,l)=eigvals(HX(ind0,N0,V[1],me, mh,Q[1],Q[2],l))[n]
       EX0(l1)=EX(fXind(N0),l1)
       spec=optimize(EX0,l0[1],10*l0[1]) 
       lambda=[spec.minimizer]
       ind=fXind(N)
-      result=eigen(HX(ind,N,V[1],Q[1],Q[2],spec.minimizer))
+      result=eigen(HX(ind,N,V[1],me, mh ,Q[1],Q[2],spec.minimizer))
    end
    A=hcat(ind,result.vectors[:,1])
    wavefunc=[A[i,:] for i in 1:length(ind)]
@@ -179,4 +191,3 @@ function spectrum(V,n,Q,N,N0,l0)
    end
    return boundstate(result.values[1],r,lambda,A,[ O[1] for O in wavefunc])
 end
-
