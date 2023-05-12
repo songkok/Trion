@@ -20,7 +20,7 @@ alpha=1 # 1 = ground state, 2,3,4,... = excited states
 
 #V=[W(e1<->e2), W(e1<->h), W(e2<->h)] (trion)
 #V=[W(e<->h)] (exciton)
-#The 2D potentail is difined as:
+#The 2D potentail is defined as:
 #V(q)=2*pi/q*1/epsilon_2D(q), we epsilon_2D(q) is the q-dependent screening dieletric constant in 2D
 #Here W = 1/epsilon_2D(q)
 #For Keldysh
