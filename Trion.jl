@@ -22,7 +22,7 @@ alpha=1 # 1 = ground state, 2,3,4,... = excited states
 #V=[W(e<->h)] (exciton)
 #where The default potential are:
 # W=VKel (monolayer Keldysh interaction)
-VKel(q)=1/(1+r0*q)
+VKel(q)=1/epsilon*1/(1+r0*q)
 # W=Vintra1, Vintra2 (intralayer interactions in layer 1,2) 
 Vintra1(q)=(1+r2*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 Vintra2(q)=(1+r1*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
