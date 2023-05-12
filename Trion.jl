@@ -2,15 +2,15 @@ include("Hamiltonian.jl")
 include("nonlinearity.jl")
 
 #=== Model parameters =====================#
-m1=0.38/7.61994776 #(1st conduction band mass [eV Ang^2])
-m2=0.38/7.61994776 #(2nd conduction band mass [eV Ang^2] *for trion only)
-mh=0.44/7.61994776 #(Valance band mass [eV Ang^2])
+m1=0.38 #(1st conduction band mass [per free electron mass])
+m2=0.38 #(2nd conduction band mass [per free electron mass] *for trion only)
+mh=0.44 #(Valance band mass [per free electron mass])
 epsilon=1          #(substrate dieletric constant)
-r0=40.0/epsilon    #(screen length for monolayer Keldysh potential [Ang])
+r0=40.0/epsilon    #(screening length for monolayer Keldysh potential [Ang])
 Q=[0 0]            #(Total momentum [Ang^(-1)])
 
-r1=40.0            #(screen length for Layer 1 [Ang])
-r2=45.0            #(screen length for Layer 2 [Ang])
+r1=40.0            #(screening length for Layer 1 [Ang])
+r2=45.0            #(screening length for Layer 2 [Ang])
 L=6.48             #(Layer 1 and 2 interlayer distance [Ang])
 
 N0=3    # basis size (small) for optimizing the basis length
@@ -30,8 +30,8 @@ Vintra2(q)=(1+r1*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 Vinter(q)=exp(-q*L)/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 
 #=== Exiton/Trion Energy & Wavefunction =====================#
-exciton=spectrum([VKel],alpha,Q,N,N0,9)
-trion=spectrum([VKel VKel VKel],alpha,Q,N,N0,9)
+exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,9)
+trion=spectrum([VKel VKel VKel], [m1 m2 mh],alpha,Q,N,N0,9)
 
 #=== Nonlinearity calculation ===============================#
 #exciton
