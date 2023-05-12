@@ -147,8 +147,7 @@ IAmn = (-2*(m2px == n2px && m2py == n2py && (m1x + n1x + gx)%2 == 0 && (m1y + n1
 end
 
 function gX(V,exciton,N,Ncut)
-    global epsilon
-    k0=13.605692*2*0.529177/(2*pi)^2/epsilon
+    k0=13.605692*2*0.529177/(2*pi)^2
     Amn=[exciton.A[i][2] for i in 1:Ncut]
     m=[exciton.A[i][1] for i in 1:Ncut]
     lambda=exciton.lambda[1]
@@ -170,8 +169,7 @@ function gX(V,exciton,N,Ncut)
 end
 
 function gT(V,trion,N,Ncut)
-    global epsilon
-    k0=13.605692*2*0.529177/(2*pi)^2/epsilon
+    k0=13.605692*2*0.529177/(2*pi)^2
     Amn=[trion.A[i][2] for i in 1:Ncut]
     m=[trion.A[i][1] for i in 1:Ncut]
     lambda=trion.lambda[1]
