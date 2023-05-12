@@ -61,7 +61,6 @@ function VK(bx,by,lambda)
 end
 
 function HT(Ind, Nmax, V12, V13, V23, Qx, Qy, lambda1, lambda2)
-   global epsilon
    global m1, m2, mh
    Nind=length(Ind)
    H=zeros(Nind,Nind)
@@ -112,7 +111,6 @@ function HT(Ind, Nmax, V12, V13, V23, Qx, Qy, lambda1, lambda2)
 end
 
 function HX(Ind, Namx, V, Qx, Qy, lambda)
-   global epsilon
    global m1, mh
    Nind=length(Ind)
    H=zeros(Nind,Nind)
