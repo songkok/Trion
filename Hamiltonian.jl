@@ -65,7 +65,7 @@ function HT(Ind, Nmax, V12, V13, V23, Qx, Qy, lambda1, lambda2)
    global m1, m2, mh
    Nind=length(Ind)
    H=zeros(Nind,Nind)
-   k0=13.605692*2*0.529177/(2*pi)^2/epsilon
+   k0=13.605692*2*0.529177/(2*pi)^2
    t1=(1/lambda1)
    t2=(1/lambda2)
    lbar=sqrt(lambda1^2+lambda2^2)
@@ -116,7 +116,7 @@ function HX(Ind, Namx, V, Qx, Qy, lambda)
    global m1, mh
    Nind=length(Ind)
    H=zeros(Nind,Nind)
-   k0=13.605692*2*0.529177/(2*pi)^2/epsilon
+   k0=13.605692*2*0.529177/(2*pi)^2
    t=(1/lambda)
    KE(t,mc,Q,m,n)=t*(t*(1/mc+1/mh)/2*F(2,m,n)-(Q/mh)*F(1,m,n))
    g(m,n,s,l)=(l)^(n-s)*(-l)^(m-s)*binomial(n,s)*binomial(m,s)*(2^(s-(n+m)/2)*factorial(s)/(sqrt(factorial(m))*sqrt(factorial(n))))
