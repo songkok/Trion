@@ -3,7 +3,7 @@ This is a Julia numerical package for calculating the spectrum and wavefunction 
 
 ```julia
 
-include("Hamiltonian.jl")
+include("Trion.jl")
 include("nonlinearity.jl")
 
 #=== Model parameters =====================#
