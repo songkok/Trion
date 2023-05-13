@@ -146,11 +146,12 @@ IAmn = (-2*(m2px == n2px && m2py == n2py && (m1x + n1x + gx)%2 == 0 && (m1y + n1
     return (-1)^(Int(g2x+g2y))*prod(map(Nc, vcat(vcat(h1x,h2x), vcat(h1y,h2y))))*([JRmn,JAmn])-prod(map(Nc, vcat(hx, hy)))*[IRmn,IAmn]
 end
 
-function gX(V,exciton,N,Ncut)
+function gX(V,exciton,Ncut)
     k0=13.605692*2*0.529177/(2*pi)^2
     Amn=[exciton.A[exciton.order[i]] for i in 1:Ncut]
     m=[exciton.order[i] for i in 1:Ncut]
     lambda=exciton.lambda[1]
+    N=exciton.N
     SumI=[]
     for n1 in 1:Ncut
         for n2 in 1:Ncut
@@ -173,6 +174,7 @@ function gT(V,trion,N,Ncut)
     Amn=[trion.A[trion.order[i]] for i in 1:Ncut]
     m=[trion.order[i] for i in 1:Ncut]
     lambda=trion.lambda[1]
+    N=trion.N
     SumI=[]
     for n1 in 1:Ncut
         for n2 in 1:Ncut
