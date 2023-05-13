@@ -50,7 +50,7 @@ trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 # m1, m2 = masses for the two particles with SAME charges, mh = particle mass with different charges with m1, m2 [ in the unit of free electron mass]
 ```
 The expansion of the trion wavefunction in momentum ($k$) space is
-$$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} H_{n_x}(k_x\lambda)H_{n_y}(k_y\lambda) e^{-\frac{1}{2}\lambda^2(k_x^2+k_y^2)}.$$
+$$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} H_{n_{1x}}(k_{1x}\lambda)H_{n_{1y}}(k_{1y}\lambda) H_{n_{2x}}(k_{2x}\lambda)H_{n_{2y}}(k_{2y}\lambda) e^{-\frac{1}{2}\lambda^2(k_{1x}^2+k_{1y}^2)-\frac{1}{2}\lambda^2(k_{2x}^2+k_{2y}^2)}.$$
 where $lambda$ is the basis length that contain in
 
 ### Nonlinearity calculation ("Nonlinearity.jl")
