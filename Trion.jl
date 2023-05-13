@@ -6,8 +6,9 @@ using Optim
 struct boundstate
    energy
    r
-   lambda
    A
+   lambda
+   N
    order
 end
 
@@ -189,5 +190,5 @@ function spectrum(V, mass, n,Q,N,N0,l0)
    else
       r=lambda[1]sqrt(r2f(A,ind,1,[2 0])+r2f(A,ind,2,[0 2]))
    end
-   return boundstate(result.values[1],r,lambda,A,[ O[1] for O in wavefunc])
+   return boundstate(result.values[1],r,A,lambda,N,[ O[1] for O in wavefunc])
 end
