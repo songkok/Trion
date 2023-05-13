@@ -4,7 +4,7 @@ This is a Julia numerical package for calculating the spectrum and wavefunction 
 ```julia
 
 include("Trion.jl")
-include("nonlinearity.jl")
+include("Nonlinearity.jl")
 
 #=== Model parameters =====================#
 m1=0.38 #(1st conduction band mass [per free electron mass])
