@@ -148,8 +148,8 @@ end
 
 function gX(V,exciton,N,Ncut)
     k0=13.605692*2*0.529177/(2*pi)^2
-    Amn=[exciton.A[i][2] for i in 1:Ncut]
-    m=[exciton.A[i][1] for i in 1:Ncut]
+    Amn=[exciton.A[exciton.order[i]] for i in 1:Ncut]
+    m=[exciton.order[i] for i in 1:Ncut]
     lambda=exciton.lambda[1]
     SumI=[]
     for n1 in 1:Ncut
@@ -170,8 +170,8 @@ end
 
 function gT(V,trion,N,Ncut)
     k0=13.605692*2*0.529177/(2*pi)^2
-    Amn=[trion.A[i][2] for i in 1:Ncut]
-    m=[trion.A[i][1] for i in 1:Ncut]
+    Amn=[trion.A[trion.order[i]] for i in 1:Ncut]
+    m=[trion.order[i] for i in 1:Ncut]
     lambda=trion.lambda[1]
     SumI=[]
     for n1 in 1:Ncut
