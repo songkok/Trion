@@ -52,9 +52,13 @@ trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 
 ### Nonlinearity calculation ("Nonlinearity.jl")
 ```julia
-gX(VKel,exciton,N,Ncut) #exciton
-gT(VKel,trion,N,Ncut) #trion
+gX(W,exciton,Ncut) # exciton
+gT(W,trion,Ncut)   # trion
+# W = e-e. e-h, h-h interaction (e=electron, h=hole)
+# 'exciton' and 'trion' are the object that are returned by 'spectrum' function.
+# Ncut is the number of basis function that will be use in nonlinearity calculation.
 ```
+We note that we currently only support the nonlinearity calculation for monolayer. All the electrons and holes interacting potential are the same.
 
 ### Example: exciton and trion in TMDC monolayer
 
@@ -96,9 +100,9 @@ trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,9.0)
 
 #=== Nonlinearity calculation ===============================#
 #exciton
- gX(VKel,exciton,N,5)
+ gX(VKel,exciton,5)
 #trion
- gT(VKel,trion,N,10)
+ gT(VKel,trion,10)
 
 ```
 
