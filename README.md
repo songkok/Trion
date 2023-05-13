@@ -2,11 +2,11 @@
 This is a Julia numerical package for calculating the spectrum and wavefunction of exciton and trion in two-dimensional materials.
 
 ## Tutorial
-This package includes two files. "Trion.jl" is the main program for calculating the exciton/trion boundstate properties. "Nonlinearity.jl" is estimate the nonlinearity arising from exciton-exction and trion-trion interactions. To use them
+This package includes two codes. "Trion.jl" is the main program for calculating the exciton/trion boundstate properties. "Nonlinearity.jl" is for evaluating the nonlinearity arise from exciton-exction and trion-trion interactions. 
 
 ### One exciton/trion boundstate calculation ("Trion.jl")
 
-To calculation the exciton bound state, we call the main function: 'spectrum' in "Trion.jl" as follow
+To calculate the exciton bound state, we call the main function: 'spectrum' in "Trion.jl" as follow
 ```julia
 include("Trion.jl")
 
@@ -24,19 +24,19 @@ In this package, the 2D potential is defined as
 $$ V(q) = \frac{1}{\epsilon_q} \frac{2\pi}{q}\quad\quad \text{  (cgs unit)}$$
 
 where $\epsilon_q$ is a 2D momentum-dependent screening dielectric constant (dimensionless). 
-We note that, $\epsilon_q=1$ in vacuum. For the commonly used Keldysh potential in 2D materials, $\epsilon_q=1+r_\ast q$ where $r_\ast$ is the screening parameter. 
+We note that, $\epsilon_q=1$ in vacuum. For the commonly used Keldysh potential, $\epsilon_q=1+r_\ast q$ where $r_\ast$ is the screening parameter. 
 
-For the input in the code, 
+For input into the code, 
 $$W=\frac{1}{\epsilon_q}.$$
 
-Once the calculation is done. One can retrive the boundstate properties by the object 'exciton' as follow
+Once the calculation is done. One can retrive the bound state properties by the object 'exciton' as follow
 ```julia
 exciton.energy  # boundstate energy [ eV ]
 exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrong] 
 exciton.A       # exciton wavefunction expanded in the Hermite functions basis [ [nx ny] => C_{nx, ny} ]
 ```
 The expansion of the exciton wavefunction in momentum ($k$) space is
-$$\psi(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} H_{n_x}(k_x\lambda)H_{n_y}(k_y\lambda) e^{-\frac{1}{2}\lambda^2(k_x^2+k_y^2)}.$$
+$$\psi_X(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} H_{n_x}(k_x\lambda)H_{n_y}(k_y\lambda) e^{-\frac{1}{2}\lambda^2(k_x^2+k_y^2)}.$$
 where $lambda$ is the basis length that contain in
 ```julia
 exciton.lambda  # optimal basis length [ Angstrong]
@@ -49,6 +49,9 @@ trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 # W1h and W2h are the interactions of the particles with the OPPOSITE charges
 # m1, m2 = masses for the two particles with SAME charges, mh = particle mass with different charges with m1, m2 [ in the unit of free electron mass]
 ```
+The expansion of the trion wavefunction in momentum ($k$) space is
+$$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} H_{n_x}(k_x\lambda)H_{n_y}(k_y\lambda) e^{-\frac{1}{2}\lambda^2(k_x^2+k_y^2)}.$$
+where $lambda$ is the basis length that contain in
 
 ### Nonlinearity calculation ("Nonlinearity.jl")
 ```julia
