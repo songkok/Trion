@@ -6,12 +6,10 @@ This package includes two files. "Trion.jl" is the main program for calculating 
 
 ### One exciton/trion boundstate calculation ("Trion.jl")
 
-To calculation the boundstate, 
+To calculation the exciton bound state, we call the main function: 'spectrum' in "Trion.jl" as follow
 ```julia
 include("Trion.jl")
-```
-Then, calling the main function: 'spectrum' for exciton calculation as follow
-```julia
+
 exciton = spectrum([W],[me mh],alpha,Q,N,N0,L0)
 # W is the screening dielectric constant in 2D (see later text)
 # me = conduction band mass, mh = valence band mass [ in the unit of free electron mass]
@@ -33,14 +31,36 @@ $$W=\frac{1}{\epsilon_q}.$$
 
 Once the calculation is done. One can retrive the boundstate properties by the object 'exciton' as follow
 ```julia
-exciton.energy  # boundstate energy
-exciton.r       # electron and hole average distance [sqrt(<r^2>)] 
-exciton.A       # exciton wavefunction expanded in the Hermite functions basis
+exciton.energy  # boundstate energy [ eV ]
+exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrong] 
+exciton.A       # exciton wavefunction expanded in the Hermite functions basis [ [nx ny] => C_{nx, ny} ]
+```
+The expansion of the exciton wavefunction in momentum ($k$) space is
+$$\psi(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} H_{n_x}(k_x\lambda)H_{n_y}(k_y\lambda) e^{-\frac{1}{2}\lambda^2(k_x^2+k_y^2)}.$$
+where $lambda$ is the basis length that contain in
+```julia
+exciton.lambda  # optimal basis length [ Angstrong]
+```
+
+Similarly, for calculating Trion bound state. Calling 'spectrum' as follow
+```julia
+trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
+# W12 is interaction of the particle with the SAME charges
+# W1h and W2h are the interactions of the particles with the OPPOSITE charges
+# m1, m2 = masses for the two particles with SAME charges, mh = particle mass with different charges with m1, m2 [ in the unit of free electron mass]
+```
+
+### Nonlinearity calculation ("Nonlinearity.jl")
+```julia
+gX(VKel,exciton,N,Ncut) #exciton
+gT(VKel,trion,N,Ncut) #trion
 ```
 
 ### Example: exciton and trion in TMDC monolayer
 
 ```julia
+include("Trion.jl")
+include("Nonlinearity.jl")
 #=== Model parameters =====================#
 m1=0.38 #(1st conduction band mass [per free electron mass])
 m2=0.38 #(2nd conduction band mass [per free electron mass] *for trion only)
@@ -76,9 +96,9 @@ trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,9.0)
 
 #=== Nonlinearity calculation ===============================#
 #exciton
-# gX(VKel,exciton,N,5)
+ gX(VKel,exciton,N,5)
 #trion
-# gT(VKel,trion,N,10)
+ gT(VKel,trion,N,10)
 
 ```
 
