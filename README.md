@@ -17,7 +17,7 @@ exciton = spectrum([W],[me mh],alpha,Q,N,N0,L0)
 # Q = [Qx Qy] is the exciton momentum.
 # N is the cutoff parameter for the basis set.
 # N0 and L0 are initial guess of the boundstate solution. 
-# Typicall, N0 < 3 (initial size of the basis set) and L0 is about the Bohr radius.
+# Typically, N0 < 3 (initial size of the basis set) and L0 is about the Bohr radius.
 ```
 In this package, the 2D potential is defined as
 
