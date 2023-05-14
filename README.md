@@ -34,23 +34,24 @@ $$W(q)=\frac{1}{\epsilon_q}.$$
 Once the calculation is done. One can retrive the bound state properties by the object 'exciton' as follow
 ```julia
 exciton.energy  # boundstate energy [ eV ]
-exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrong] 
+exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrom] 
 exciton.A       # exciton wavefunction expanded in the Hermite functions basis [ [nx ny] => C_{nx, ny} ]
 ```
 The expansion of the exciton wavefunction (in momentum space) is
 $$\psi_X(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} \varphi_{n_x}(k_x\lambda)\varphi_{n_y}(k_y\lambda)$$
 where $\varphi_n(k)=\sqrt{\frac{\lambda}{\pi^{1/2} 2^n n!}}H_n(k)e^{-\frac{1}{2}k^2}$ with Hermite polynomial $H_n(k)$ and optimal basis length $\lambda$ that contains in
 ```julia
-exciton.lambda  # optimal basis length [ Angstrong]
+exciton.lambda  # optimal basis length [Angstrom]
 ```
 
 Similarly, for calculating Trion bound state. We use the following
 ```julia
 trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
-# W12 is interaction of the particle with the SAME charges
-# W1h and W2h are the interactions of the particles with the OPPOSITE charges
-# m1, m2 = masses for the two particles with SAME charges, 
-# mh = particle mass with different charges with m1, m2 [ in the unit of free electron mass]
+# m1, m2 = masses for the two particles with SAME charges. 
+# mh = mass for the particle having OPPOSITE charge with m1 and m2.  [in the unit of free electron mass]
+# W12 = interaction between the particle with mass m1 and mass m2
+# W1h = interaction between the particle with mass m1 and mass mh
+# W2h = interaction between the particle with mass m2 and mass mh
 ```
 The expansion of the trion wavefunction in momentum ($k$) space is
 $$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} \varphi_{n_{1x}}(k_{1x}\lambda)\varphi_{n_{1y}}(k_{1y}\lambda) \varphi_{n_{2x}}(k_{2x}\lambda')\varphi_{n_{2y}}(k_{2y}\lambda').$$
