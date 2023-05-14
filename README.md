@@ -2,9 +2,9 @@
 This is a Julia numerical package for calculating the spectrum and wavefunction of exciton and trion in two-dimensional materials.
 
 ## Tutorial
-This package includes two codes: 
-- "Trion.jl" is the main program for calculating the exciton/trion bound state properties. 
-- "Nonlinearity.jl" is for evaluating the nonlinearity arise from exciton-exction and trion-trion interactions. 
+This package includes: 
+- "Trion.jl", for calculating the exciton/trion bound state properties. 
+- "Nonlinearity.jl", for evaluating the nonlinearity arise from exciton-exction and trion-trion interactions. 
 
 ### One exciton/trion boundstate calculation ("Trion.jl")
 
