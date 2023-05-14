@@ -53,8 +53,8 @@ trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 # mh = particle mass with different charges with m1, m2 [ in the unit of free electron mass]
 ```
 The expansion of the trion wavefunction in momentum ($k$) space is
-$$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} H_{n_{1x}}(k_{1x}\lambda)H_{n_{1y}}(k_{1y}\lambda) H_{n_{2x}}(k_{2x}\lambda)H_{n_{2y}}(k_{2y}\lambda) e^{-\frac{1}{2}\lambda^2(k_{1x}^2+k_{1y}^2)-\frac{1}{2}\lambda^2(k_{2x}^2+k_{2y}^2)}.$$
-where $lambda$ is the basis length that contain in
+$$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} \varphi_{n_{1x}}(k_{1x}\lambda)\varphi_{n_{1y}}(k_{1y}\lambda) \varphi_{n_{2x}}(k_{2x}\lambda')\varphi_{n_{2y}}(k_{2y}\lambda').$$
+We note that $\lambda=\lambda'$ if $m_1=m_2$.  
 
 ### Nonlinearity calculation ("Nonlinearity.jl")
 ```julia
@@ -64,7 +64,7 @@ gT(W,trion,Ncut)   # trion
 # 'exciton' and 'trion' are the object that are returned by 'spectrum' function.
 # Ncut is the number of basis function that will be use in nonlinearity calculation.
 ```
-We note that we currently only support the nonlinearity calculation for monolayer. All the electrons and holes interacting potential are the same.
+We note that the code currently only support the nonlinearity calculation for monolayer. Also, the nonlinearity calculation for the trion wavefunction with $\lambda\neq\lambda'$ is not supported too. 
 
 ### Example: exciton and trion in TMDC monolayer
 
