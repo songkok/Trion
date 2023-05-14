@@ -2,11 +2,13 @@
 This is a Julia numerical package for calculating the spectrum and wavefunction of exciton and trion in two-dimensional materials.
 
 ## Tutorial
-This package includes two codes. "Trion.jl" is the main program for calculating the exciton/trion boundstate properties. "Nonlinearity.jl" is for evaluating the nonlinearity arise from exciton-exction and trion-trion interactions. 
+This package includes two codes: 
+- "Trion.jl" is the main program for calculating the exciton/trion bound state properties. 
+- "Nonlinearity.jl" is for evaluating the nonlinearity arise from exciton-exction and trion-trion interactions. 
 
 ### One exciton/trion boundstate calculation ("Trion.jl")
 
-To calculate the exciton bound state, we call the main function: 'spectrum' in "Trion.jl" as follow
+To calculate the exciton bound state, we call 'spectrum' in "Trion.jl" as follow
 ```julia
 include("Trion.jl")
 
@@ -26,7 +28,7 @@ $$ V(q) = \frac{1}{\epsilon_q} \frac{2\pi}{q}\quad\quad \text{  (cgs unit)}$$
 where $\epsilon_q$ is a 2D momentum-dependent screening dielectric constant (dimensionless). 
 We note that, $\epsilon_q=1$ in vacuum. For the commonly used Keldysh potential, $\epsilon_q=1+r_\ast q$ where $r_\ast$ is the screening parameter. 
 
-For input into the code, 
+For input in the code,  
 $$W=\frac{1}{\epsilon_q}.$$
 
 Once the calculation is done. One can retrive the bound state properties by the object 'exciton' as follow
@@ -35,14 +37,14 @@ exciton.energy  # boundstate energy [ eV ]
 exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrong] 
 exciton.A       # exciton wavefunction expanded in the Hermite functions basis [ [nx ny] => C_{nx, ny} ]
 ```
-The expansion of the exciton wavefunction in momentum ($k$) space is
-$$\psi_X(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} H_{n_x}(k_x\lambda)H_{n_y}(k_y\lambda) e^{-\frac{1}{2}\lambda^2(k_x^2+k_y^2)}.$$
-where $lambda$ is the basis length that contain in
+The expansion of the exciton wavefunction (in momentum space) is
+$$\psi_X(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} \varphi_{n_x}(k_x\lambda)\varphi_{n_y}(k_y\lambda)$$
+where $\varphi_n(k)=\sqrt{\frac{\lambda}{\pi^{1/2} 2^n n!}}H_n(k)e^{-\frac{1}{2}k^2}$ with Hermite polynomial $H_n(k)$ and optimal basis length $\lambda$ that contains in
 ```julia
 exciton.lambda  # optimal basis length [ Angstrong]
 ```
 
-Similarly, for calculating Trion bound state. Calling 'spectrum' as follow
+Similarly, for calculating Trion bound state. We use the following
 ```julia
 trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 # W12 is interaction of the particle with the SAME charges
