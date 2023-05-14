@@ -29,7 +29,7 @@ where $\epsilon_q$ is a 2D momentum-dependent screening dielectric constant (dim
 We note that, $\epsilon_q=1$ in vacuum. For the commonly used Keldysh potential, $\epsilon_q=1+r_\ast q$ where $r_\ast$ is the screening parameter. 
 
 For input in the code,  
-$$W=\frac{1}{\epsilon_q}.$$
+$$W(q)=\frac{1}{\epsilon_q}.$$
 
 Once the calculation is done. One can retrive the bound state properties by the object 'exciton' as follow
 ```julia
