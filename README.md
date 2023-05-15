@@ -61,9 +61,9 @@ gX(W,exciton,Ncut) # exciton
 gT(W,trion,Ncut)   # trion
 # W = e-e. e-h, h-h interaction (e=electron, h=hole)
 # 'exciton' and 'trion' are the object that are returned by 'spectrum' function.
-# Ncut is the number of basis function that will be use in nonlinearity calculation.
+# Ncut is the number of basis function that will be used in the nonlinearity calculation.
 ```
-We note that the code currently only support the nonlinearity calculation for monolayer. Also, the nonlinearity calculation for the trion wavefunction with $\lambda\neq\lambda'$ is not supported too. 
+We note that the code currently can only support the nonlinearity calculation for monolayer. Also, the trion nonlinearity calculation is only work for the wavefunction with $\lambda=\lambda'$. 
 
 ### Example: exciton and trion in TMDC monolayer
 
