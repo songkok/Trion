@@ -48,7 +48,7 @@ Similarly, for calculating Trion bound state. We use the following
 ```julia
 trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 # m1, m2 = masses for the two particles with SAME charges. 
-# mh = mass for the particle having OPPOSITE charge with m1 and m2.  [in the unit of free electron mass]
+# mh = mass for the particle with charges different from m1, m2 particles.  [in the unit of free electron mass]
 # W12 = interaction between the particle with mass m1 and mass m2
 # W1h = interaction between the particle with mass m1 and mass mh
 # W2h = interaction between the particle with mass m2 and mass mh
