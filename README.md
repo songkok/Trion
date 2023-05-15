@@ -104,8 +104,11 @@ exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
 trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
 
 #= (homo) bilayer =#
-exciton2L=[spectrum([Vintra1],[m1 mh],alpha,Q,N,N0,L0), spectrum([Vinter],[m1 mh],alpha,Q,N,N0,L0)]
-trion2L=[spectrum([Vintra1 Vintra1 Vintra1],[m1 m2 mh],alpha,Q,N,N0,L0), spectrum([Vintra1 Vinter Vinter],[m1 m2 mh],alpha,Q,N,N0,L0), spectrum([Vinter Vintra Vinter],[m1 m2 mh],alpha,Q,N,N0,L0)]
+exciton2L = [spectrum([Vintra1],[m1 mh],alpha,Q,N,N0,L0), 
+            spectrum([Vinter],[m1 mh],alpha,Q,N,N0,L0) ]
+trion2L = [spectrum([Vintra1 Vintra1 Vintra1],[m1 m2 mh],alpha,Q,N,N0,L0), 
+          spectrum([Vintra1 Vinter Vinter],[m1 m2 mh],alpha,Q,N,N0,L0), 
+          spectrum([Vinter Vintra1 Vinter],[m1 m2 mh],alpha,Q,N,N0,L0) ]
 
 
 #=== Nonlinearity calculation ===============================#
