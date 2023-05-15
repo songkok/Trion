@@ -87,9 +87,6 @@ N=9     # basis size for convergent calculation
 L0=[10] # initial guess of the basis length [Ang]. input [lambda1 lambda2] will active the optimization with 2 lengths. 
 alpha=1 # 1 = ground state, 2,3,4,... = excited states
 
-#V=[W(e1<->e2), W(e1<->h), W(e2<->h)] (trion)
-#V=[W(e<->h)] (exciton)
-#where The default potential are:
 # W=VKel (monolayer Keldysh interaction)
 VKel(q)=1/(epsilon*(1+r0*q))
 # W=Vintra1, Vintra2 (intralayer interactions in layer 1,2) 
@@ -102,6 +99,7 @@ Vinter(q)=exp(-q*L)/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 #= monolayer =#
 exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
 trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
+##
 
 #= (homo) bilayer =#
 exciton2L = [spectrum([Vintra1],[m1 mh],alpha,Q,N,N0,L0), 
@@ -109,13 +107,11 @@ exciton2L = [spectrum([Vintra1],[m1 mh],alpha,Q,N,N0,L0),
 trion2L = [spectrum([Vintra1 Vintra1 Vintra1],[m1 m2 mh],alpha,Q,N,N0,L0), 
           spectrum([Vintra1 Vinter Vinter],[m1 m2 mh],alpha,Q,N,N0,L0), 
           spectrum([Vinter Vintra1 Vinter],[m1 m2 mh],alpha,Q,N,N0,L0) ]
+##
 
-
-#=== Nonlinearity calculation ===============================#
-#exciton
- gX(VKel,exciton,5)
-#trion
- gT(VKel,trion,10)
+#=== Nonlinearity in monolayer ===============================#
+gX(VKel,exciton,5) # exciton
+gT(VKel,trion,10) # trion
 
 ```
 
