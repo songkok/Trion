@@ -79,7 +79,7 @@ r0=40.0/epsilon    #(screen length for monolayer Keldysh potential [Ang])
 Q=[0 0]            #(Total momentum [Ang^(-1)])
 
 r1=40.0            #(screen length for Layer 1 [Ang])
-r2=45.0            #(screen length for Layer 2 [Ang])
+r2=40.0            #(screen length for Layer 2 [Ang])
 L=6.48             #(Layer 1 and 2 interlayer distance [Ang])
 
 N0=3    # basis size (small) for optimizing the basis length
@@ -99,8 +99,13 @@ Vintra2(q)=(1+r1*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 Vinter(q)=exp(-q*L)/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 
 #=== Exiton/Trion Energy & Wavefunction =====================#
+#= monolayer =#
 exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
 trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
+
+#= (homo) bilayer =#
+exciton2L=[spectrum([Vintra1],[m1 mh],alpha,Q,N,N0,L0), spectrum([Vinter],[m1 mh],alpha,Q,N,N0,L0)]
+trion2L=[spectrum([Vintra1 Vintra1 Vintra1],[m1 m2 mh],alpha,Q,N,N0,L0), spectrum([Vintra1 Vinter Vinter],[m1 m2 mh],alpha,Q,N,N0,L0), spectrum([Vinter Vintra Vinter],[m1 m2 mh],alpha,Q,N,N0,L0)]
 
 
 #=== Nonlinearity calculation ===============================#
