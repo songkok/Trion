@@ -23,7 +23,7 @@ exciton = spectrum([W],[me mh],alpha,Q,N,N0,L0)
 ```
 In this package, the 2D potential is defined as
 
-$$ V(q) = \frac{1}{\epsilon_q} \frac{2\pi}{q}\quad\quad \text{  (cgs unit)}$$
+$$ V(q) = \frac{1}{\epsilon_q} \frac{2\pi e^2}{q}\quad\quad \text{  (cgs unit)}$$
 
 where $\epsilon_q$ is a 2D momentum-dependent screening dielectric constant (dimensionless). 
 We note that, $\epsilon_q=1$ in vacuum. For the commonly used Keldysh potential, $\epsilon_q=1+r_\ast q$ where $r_\ast$ is the screening parameter. 
