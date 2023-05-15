@@ -64,7 +64,7 @@ gT(W,trion,Ncut)   # trion
 # 'exciton' and 'trion' are the object that are returned by 'spectrum' function.
 # Ncut is the number of basis function that will be used in the nonlinearity calculation.
 ```
-The function gX and gT return a two componenents vector. The first and the second component are the nonlinearity from repulsive and attractive channels respectively (with unit $\mu\text{eV}\mu\text{m}^2$). The total nonlinearity is the sum of these two channels. We note that the code currently can only support the nonlinearity calculation for monolayer. Also, the trion nonlinearity calculation is only work for the wavefunction with $\lambda=\lambda'$. 
+The function gX and gT return a two-component vector. The first and the second component are the nonlinearity from repulsive and attractive channels respectively (with unit $\mu\text{eV}\mu\text{m}^2$). The total nonlinearity is the sum of these two channels. We note that the code currently can only support the nonlinearity calculation for monolayer. Also, the trion nonlinearity calculation is only work for the wavefunction with $\lambda=\lambda'$. 
 
 ### Example: exciton and trion in TMDC monolayer
 
