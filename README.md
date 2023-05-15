@@ -49,9 +49,9 @@ Similarly, for calculating Trion bound state. We use the following
 trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
 # m1, m2 = masses for the two particles with SAME charges. 
 # mh = mass for the particle with charges different from m1, m2 particles.  [in the unit of free electron mass]
-# W12 = interaction between the particle with mass m1 and mass m2
-# W1h = interaction between the particle with mass m1 and mass mh
-# W2h = interaction between the particle with mass m2 and mass mh
+# W12 = interaction between the particles with mass m1 and mass m2
+# W1h = interaction between the particles with mass m1 and mass mh
+# W2h = interaction between the particles with mass m2 and mass mh
 ```
 The expansion of the trion wavefunction in momentum ($k$) space is
 $$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} \varphi_{n_{1x}}(k_{1x}\lambda)\varphi_{n_{1y}}(k_{1y}\lambda) \varphi_{n_{2x}}(k_{2x}\lambda')\varphi_{n_{2y}}(k_{2y}\lambda').$$
