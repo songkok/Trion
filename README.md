@@ -10,8 +10,6 @@ This package includes:
 
 To calculate the exciton bound state, we call 'spectrum' in "Trion.jl" as follow
 ```julia
-include("Trion.jl")
-
 exciton = spectrum([W],[me mh],alpha,Q,N,N0,L0)
 # W is the screening dielectric constant in 2D (see later text)
 # me = conduction band mass, mh = valence band mass [ in the unit of free electron mass]
