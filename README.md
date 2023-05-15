@@ -84,7 +84,7 @@ L=6.48             #(Layer 1 and 2 interlayer distance [Ang])
 
 N0=3    # basis size (small) for optimizing the basis length
 N=9     # basis size for convergent calculation
-l0=[10] # initial guess of the basis length [Ang]. input [lambda1 lambda2] will active the optimization with 2 lengths. 
+L0=[10] # initial guess of the basis length [Ang]. input [lambda1 lambda2] will active the optimization with 2 lengths. 
 alpha=1 # 1 = ground state, 2,3,4,... = excited states
 
 #V=[W(e1<->e2), W(e1<->h), W(e2<->h)] (trion)
@@ -99,8 +99,8 @@ Vintra2(q)=(1+r1*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 Vinter(q)=exp(-q*L)/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 
 #=== Exiton/Trion Energy & Wavefunction =====================#
-exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,9.0)
-trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,9.0)
+exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
+trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
 
 
 #=== Nonlinearity calculation ===============================#
