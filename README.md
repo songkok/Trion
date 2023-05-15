@@ -34,7 +34,7 @@ Once the calculation is done. One can retrive the bound state properties by the 
 ```julia
 exciton.energy  # boundstate energy [ eV ]
 exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrom] 
-exciton.A       # exciton wavefunction expanded in the Hermite functions basis [ [nx ny] => C_{nx, ny} ]
+exciton.A       # exciton wavefunction expanded in the Hermite functions basis [It's a Dictionary: [nx ny] => C_{nx, ny} ]
 ```
 The expansion of the exciton wavefunction (in momentum space) is
 $$\psi_X(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} \varphi_{n_x}(k_x\lambda)\varphi_{n_y}(k_y\lambda)$$
