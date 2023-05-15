@@ -98,8 +98,8 @@ Vinter(q)=exp(-q*L)/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 
 #=== Exiton/Trion Energy & Wavefunction =====================#
 #= monolayer =#
-exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
-trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
+exciton1L=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
+trion1L=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
 ##
 
 #= (homo) bilayer =#
@@ -111,8 +111,8 @@ trion2L = [spectrum([Vintra1 Vintra1 Vintra1],[m1 m2 mh],alpha,Q,N,N0,L0),
 ##
 
 #=== Nonlinearity in monolayer ===============================#
-gX(VKel,exciton,5) # exciton
-gT(VKel,trion,10) # trion
+gX(VKel,exciton1L,5) # exciton
+gT(VKel,trion1L,10) # trion
 
 ```
 
