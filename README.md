@@ -28,7 +28,7 @@ We note that, $\epsilon_q=1$ in vacuum. For the commonly used Keldysh potential,
 
 For input in the code,  
 $$W(q)=\frac{1}{\epsilon_q}.$$
-Here, the unit for $q$ must be same as $1\L0$ which is $\AA^{-1}$ and also make sure that $W(q)$ is dimensionaless.
+Here, the unit for $q$ must be same as $1/L0$ which is $\text{Ang}^{-1}$ and also make sure that $W(q)$ is dimensionaless.
 
 Once the calculation is done. One can retrive the bound state properties by the object 'exciton' as follow
 ```julia
