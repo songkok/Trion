@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Song"
+  given-names: "Kok Wee"
+  orcid: "https://orcid.org/0000-0002-5867-5452"
+- family-names: "Chiavazzo"
+  given-names: "Salvatore"
+- family-names: "Shelykh"
+  given-names: "Ivan"
+  orcid: "https://orcid.org/0000-0001-5393-821X"
+- family-names: "Kyriienko"
+  given-names: "Oleksandr"
+  orcid: "https://orcid.org/0000-0002-6259-6570"
+title: "Trion"
+version: 1.0.0
+date-released: 2023-05-19
+url: "https://github.com/songkok/Trion"
