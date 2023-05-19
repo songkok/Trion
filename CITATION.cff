@@ -12,7 +12,7 @@ authors:
 - family-names: "Kyriienko"
   given-names: "Oleksandr"
   orcid: "https://orcid.org/0000-0002-6259-6570"
-title: "Trion"
+title: "Trion.jl: a numerical package for exciton and trion nonlinearity"
 version: 1.0.0
 date-released: 2023-05-19
 url: "https://github.com/songkok/Trion"
