@@ -64,7 +64,7 @@ gT(W,trion,Ncut)   # trion
 # 'exciton' and 'trion' are the object that are returned by 'spectrum' function.
 # Ncut is the number of basis function that will be used in the nonlinearity calculation.
 ```
-The function gX and gT return a two-component vector. The first and the second component are the nonlinearity from repulsive and attractive channels respectively (with unit $\mu\text{eV}\mu\text{m}^2$). The total nonlinearity is the sum of these two channels. We note that the code currently can only support the nonlinearity calculation for monolayer. Also, the trion nonlinearity calculation is only work for the wavefunction with $\lambda=\lambda'$. 
+The function gX and gT return a two-component vector. The first and the second component are the nonlinearity from repulsive and attractive channels respectively (with unit $\mu\text{eV}\mu\text{m}^2$). The total nonlinearity is the sum of these two channels. We note that the trion nonlinearity calculation is only work for the wavefunction with $\lambda=\lambda'$. 
 
 ### Example: exciton and trion in TMDC monolayer
 
@@ -79,10 +79,6 @@ epsilon=1          #(substrate dieletric constant)
 r0=40.0/epsilon    #(screen length for monolayer Keldysh potential [Ang])
 Q=[0 0]            #(Total momentum [Ang^(-1)])
 
-r1=40.0            #(screen length for Layer 1 [Ang])
-r2=40.0            #(screen length for Layer 2 [Ang])
-L=6.48             #(Layer 1 and 2 interlayer distance [Ang])
-
 N0=3    # basis size (small) for optimizing the basis length
 N=9     # basis size for convergent calculation
 L0=[10] # initial guess of the basis length [Ang]. input [lambda1 lambda2] will active the optimization with 2 lengths. 
@@ -90,29 +86,17 @@ alpha=1 # 1 = ground state, 2,3,4,... = excited states
 
 # W=VKel (monolayer Keldysh interaction)
 VKel(q)=1/(epsilon*(1+r0*q))
-# W=Vintra1, Vintra2 (intralayer interactions in layer 1,2) 
-Vintra1(q)=(1+r2*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
-Vintra2(q)=(1+r1*q*(1-exp(-2*L*q)))/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
-# W= Vinter (interlayer interaction)
-Vinter(q)=exp(-q*L)/((1+r1*q)*(1+r2*q)-r1*r2*q^2*exp(-2*L*q))
 
 #=== Exiton/Trion Energy & Wavefunction =====================#
 #= monolayer =#
-exciton1L=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
-trion1L=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
+exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
+trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
 ##
 
-#= (homo) bilayer =#
-exciton2L = [spectrum([Vintra1],[m1 mh],alpha,Q,N,N0,L0), 
-            spectrum([Vinter],[m1 mh],alpha,Q,N,N0,L0) ]
-trion2L = [spectrum([Vintra1 Vintra1 Vintra1],[m1 m2 mh],alpha,Q,N,N0,L0), 
-          spectrum([Vintra1 Vinter Vinter],[m1 m2 mh],alpha,Q,N,N0,L0), 
-          spectrum([Vinter Vintra1 Vinter],[m1 m2 mh],alpha,Q,N,N0,L0) ]
-##
 
 #=== Nonlinearity in monolayer ===============================#
-gX(VKel,exciton1L,5) # exciton
-gT(VKel,trion1L,10) # trion
+gX(VKel,exciton,5) # exciton
+gT(VKel,trion,10) # trion
 
 ```
 
