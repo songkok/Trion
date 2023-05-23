@@ -1,9 +1,19 @@
 
 """
-    gX(V::vec, exciton::boundstate, Ncut::Int)
-    gT(V::vec, trion::boundstate, Ncut::Int)    
+    gX(V::function, exciton::boundstate, Ncut::Int)
+    gT(V::function, trion::boundstate, Ncut::Int)    
 
 Exciton and Trion nonlinearity calculation for monolayer. 
+
+Inputs:
+
+V       = e-e. e-h, h-h interaction (e=electron, h=hole)
+Ncut    = the number of basis function that will be used in the nonlinearity calculation
+exciton, trion = the object that are returned by 'spectrum' function
+
+Returns:
+
+A two-component vectors = [repulsive, attractive]
 """
 
 # Normalization constant for Hermite basis
