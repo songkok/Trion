@@ -1,14 +1,22 @@
 # Trion
 This is a Julia numerical package for calculating the spectrum and wavefunction of exciton and trion in two-dimensional materials.
 
+## Install
+```julia
+julia> ]
+
+pkg> add https://github.com/songkok/Trion.jl
+```
+
 ## Tutorial
-This package includes: 
-- "Trion.jl", for calculating the exciton/trion bound state properties. 
-- "Nonlinearity.jl", for evaluating the nonlinearity arise from exciton-exction and trion-trion interactions. 
+This package includes the following main functions: 
+- spectrum, for calculating the exciton/trion bound state properties. 
+- gX, for evaluating the nonlinearity arise from exciton-exction
+- gT, for evaluating the nonlinearity arise from trion-trion interactions. 
 
-### One exciton/trion boundstate calculation ("Trion.jl")
+### One exciton/trion boundstate calculation (spectrum)
 
-To calculate the exciton bound state, we call 'spectrum' in "Trion.jl" as follow
+To calculate the exciton bound state, we call 'spectrum' in as follow
 ```julia
 exciton = spectrum([W],[me mh],alpha,Q,N,N0,L0)
 # W is the screening dielectric constant in 2D (see later text)
@@ -56,7 +64,7 @@ The expansion of the trion wavefunction in momentum ($k$) space is
 $$\psi_T(k_{1x},k_{1y},k_{2x},k_{2y})=\sum_{0\leq n_{1x}+n_{1y}+n_{2x}+n_{2y} \leq N}C_{n_{1x},n_{1y},n_{2x},n_{2y}} \varphi_{n_{1x}}(k_{1x}\lambda)\varphi_{n_{1y}}(k_{1y}\lambda) \varphi_{n_{2x}}(k_{2x}\lambda')\varphi_{n_{2y}}(k_{2y}\lambda').$$
 We note that $\lambda=\lambda'$ if $m_1=m_2$. One can still use $\lambda=\lambda'$ in the basis expansion for $m_1\neq m_2$ case but one may require large cutoff (N) for the basis set to attain desirable accuracy.
 
-### Nonlinearity calculation ("Nonlinearity.jl")
+### Nonlinearity calculation (gX, gT)
 ```julia
 gX(W,exciton,Ncut) # exciton
 gT(W,trion,Ncut)   # trion
@@ -69,8 +77,7 @@ The function gX and gT return a two-component vector. The first and the second c
 ### Example: exciton and trion in TMDC monolayer
 
 ```julia
-include("Trion.jl")
-include("Nonlinearity.jl")
+using Trion
 #=== Model parameters =====================#
 m1=0.38 #(1st conduction band mass [per free electron mass])
 m2=0.38 #(2nd conduction band mass [per free electron mass] *for trion only)
@@ -89,14 +96,14 @@ VKel(q)=1/(epsilon*(1+r0*q))
 
 #=== Exiton/Trion Energy & Wavefunction =====================#
 #= monolayer =#
-exciton=spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
-trion=spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
+X=Trion.spectrum([VKel],[m1 mh],alpha,Q,N,N0,L0)
+T=Trion.spectrum([VKel VKel VKel],[m1 m2 mh],alpha,Q,N,N0,L0)
 ##
 
 
 #=== Nonlinearity in monolayer ===============================#
-gX(VKel,exciton,5) # exciton
-gT(VKel,trion,10) # trion
+Trion.gX(VKel,X,5) # exciton
+Trion.gT(VKel,T,10) # trion
 
 ```
 
