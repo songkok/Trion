@@ -42,7 +42,8 @@ Once the calculation is done. One can retrive the bound state properties by the 
 ```julia
 exciton.energy  # boundstate energy [ eV ]
 exciton.r       # electron and hole average distance [sqrt(<r^2>), Angstrom] 
-exciton.A       # exciton wavefunction expanded in the Hermite functions basis [It's a Dictionary: [nx ny] => C_{nx, ny} ]
+exciton.A       # exciton wavefunction expanded in the Hermite functions basis 
+                  [It's a Dictionary: [nx ny] => C_{nx, ny} ]
 ```
 The expansion of the exciton wavefunction (in momentum space) is
 $$\psi_X(k_x,k_y)=\sum_{0\leq n_x+n_y \leq N}C_{n_x,n_y} \varphi_{n_x}(k_x\lambda)\varphi_{n_y}(k_y\lambda)$$
@@ -54,8 +55,8 @@ exciton.lambda  # optimal basis length [Angstrom]
 Similarly, for calculating Trion bound state. We use the following
 ```julia
 trion = spectrum([W12 W1h W2h],[m1 m2 mh],alpha,Q,N,N0,9.0)
-# m1, m2 = masses for the two particles with SAME charges. 
-# mh = mass for the particle with charges different from m1, m2 particles.  [in the unit of free electron mass]
+# m1, m2 = masses for the two particles with SAME charges. [unit of free electron mass]
+# mh = mass for the particle with charges different from m1, m2 particles.  
 # W12 = interaction between the particles with mass m1 and mass m2
 # W1h = interaction between the particles with mass m1 and mass mh
 # W2h = interaction between the particles with mass m2 and mass mh
